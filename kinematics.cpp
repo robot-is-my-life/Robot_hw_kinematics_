@@ -9,7 +9,7 @@ void multiply_matrix_4x4(double  first[][4], double  second[][4], double  result
 double  theta_1 = 10;
 double  theta_2 = 20;
 double  theta_3 = 30;
-double  theta_4 = 0;
+double  theta_4 = 40;
 double  theta_5 = 0;
 double  theta_6 = 0;
 
@@ -261,74 +261,141 @@ int PUMA_invers_kinematics(double  kinematics_result[][4], double  result_inv[6]
   
 
 
-    double theta1_p = atan2(P_y * sqrt(pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)) + P_x * d_2,
-                    P_x * sqrt(pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)) - P_y * d_2);
+    double theta1[2] = { atan2(P_y * sqrt(pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)) + P_x * d_2,
+                    P_x * sqrt(pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)) - P_y * d_2)
+                        ,
+                        atan2(-1 * P_y * sqrt(pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)) + P_x * d_2,
+                     -1 * P_x * sqrt(pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)) - P_y * d_2)
+    };
 
-    double theta1_n = atan2(-1*P_y * sqrt(pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)) + P_x * d_2,
-                     -1*P_x * sqrt(pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)) - P_y * d_2);
 
-
-    double theta3_p = atan2(-1 * (pow(P_x, 2) + pow(P_y, 2) +pow(P_z - d_1, 2) - pow(d_4, 2) - pow(a_2, 2) - pow(d_2, 2)),
+    double theta3[2] = { atan2(-1 * (pow(P_x, 2) + pow(P_y, 2) + pow(P_z - d_1, 2) - pow(d_4, 2) - pow(a_2, 2) - pow(d_2, 2)),
                      sqrt(
-                         4*pow(a_2,2)*pow(d_4,2) - 1 * pow(
+                         4 * pow(a_2,2) * pow(d_4,2) - 1 * pow(
                                                             pow(P_x, 2) + pow(P_y, 2) + pow(P_z - d_1, 2) - pow(d_4, 2) - pow(a_2, 2) - pow(d_2, 2),
                                                             2
                                                             )
                          )
-                     );
-
-    double theta3_n =atan2(-1 * (pow(P_x, 2) + pow(P_y, 2) +pow(P_z - d_1, 2) - pow(d_4, 2) - pow(a_2, 2) - pow(d_2, 2)),
-                     -1* sqrt(
-                         4*pow(a_2,2)*pow(d_4,2) - 1 * pow(
+                     )
+        ,
+                        atan2(-1 * (pow(P_x, 2) + pow(P_y, 2) + pow(P_z - d_1, 2) - pow(d_4, 2) - pow(a_2, 2) - pow(d_2, 2)),
+                     -1 * sqrt(
+                         4 * pow(a_2,2) * pow(d_4,2) - 1 * pow(
                                                             pow(P_x, 2) + pow(P_y, 2) + pow(P_z - d_1, 2) - pow(d_4, 2) - pow(a_2, 2) - pow(d_2, 2),
                                                             2
                                                             )
                          )
-                     );
+                     ) };
     //theta3가 p인 경우
-    double theta2_p_theta3_p = atan2(
-                                    (P_z - d_1) * (a_2 - d_4 * sin(theta3_p)) - sqrt(
+    double theta2[4] = { atan2(
+                                    (P_z - d_1) * (a_2 - d_4 * sin(theta3[0])) - sqrt(
                                                                                         pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)
-                                                                                      ) * d_4 * cos(theta3_p) ,
-                                    (P_z - d_1) * d_4 * cos(theta3_p) + sqrt(
+                                                                                      ) * d_4 * cos(theta3[0]) ,
+                                    (P_z - d_1) * d_4 * cos(theta3[0]) + sqrt(
                                                                                 pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)
-                                                                            ) * (a_2 - d_4 * sin(theta3_p))
-                                     );
-    double theta2_n_theta3_p = atan2(
-                                    (P_z - d_1) * (a_2 - d_4 * sin(theta3_p)) - sqrt(
+                                                                            ) * (a_2 - d_4 * sin(theta3[0]))
+                                     )
+                         ,
+                            atan2(
+                                    (P_z - d_1) * (a_2 - d_4 * sin(theta3[0])) - sqrt(
                                                                                         pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)
-                                                                                      ) * d_4 * cos(theta3_p) ,
-                                    (P_z - d_1) * d_4 * cos(theta3_p) + sqrt(
+                                                                                      ) * d_4 * cos(theta3[0]) ,
+                                    (P_z - d_1) * d_4 * cos(theta3[0]) + sqrt(
                                                                                 pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)
-                                                                            ) * (a_2 - d_4 * sin(theta3_p))
-                                     );
-    //theta3가 n인 경우
-    double theta2_p_theta3_n = atan2(
-                                    (P_z - d_1) * (a_2 - d_4 * sin(theta3_n)) + sqrt(
+                                                                            ) * (a_2 - d_4 * sin(theta3[0]))
+                                     )
+                            ,
+                             atan2(
+                                    (P_z - d_1) * (a_2 - d_4 * sin(theta3[1])) + sqrt(
                                                                                         pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)
-                                                                                      ) * d_4 * cos(theta3_n) ,
-                                    (P_z - d_1) * d_4 * cos(theta3_n) - sqrt(
+                                                                                      ) * d_4 * cos(theta3[1]) ,
+                                    (P_z - d_1) * d_4 * cos(theta3[1]) - sqrt(
                                                                                 pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)
-                                                                            ) * (a_2 - d_4 * sin(theta3_n))
-                                     );
-    
-    double theta2_n_theta3_n = atan2(
-                                    (P_z - d_1) * (a_2 - d_4 * sin(theta3_n)) + sqrt(
+                                                                            ) * (a_2 - d_4 * sin(theta3[1]))
+                                     )
+                            ,
+                            atan2(
+                                    (P_z - d_1) * (a_2 - d_4 * sin(theta3[1])) + sqrt(
                                                                                         pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)
-                                                                                      ) * d_4 * cos(theta3_n) ,
-                                    (P_z - d_1) * d_4 * cos(theta3_n) - sqrt(
+                                                                                      ) * d_4 * cos(theta3[1]) ,
+                                    (P_z - d_1) * d_4 * cos(theta3[1]) - sqrt(
                                                                                 pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)
-                                                                            ) * (a_2 - d_4 * sin(theta3_n))
-                                     );
+                                                                            ) * (a_2 - d_4 * sin(theta3[1]))
+                                     )
+    };
+    for (int i = 0; i < 2; i++)
+    {
+        for (int j = 0; j < 2; j++)
+        {
+            if (j)
+            {
+                theta2[2 * i + j] = atan2(
+                    (P_z - d_1) * (a_2 - d_4 * sin(theta3[i])) + sqrt(
+                        pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)
+                    ) * d_4 * cos(theta3[i]),
+                    (P_z - d_1) * d_4 * cos(theta3[i]) - sqrt(
+                        pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)
+                    ) * (a_2 - d_4 * sin(theta3[i]))
+                );
+            }
+            else
+            {
+                theta2[2 * i + j] = atan2(
+                    (P_z - d_1) * (a_2 - d_4 * sin(theta3[i])) - sqrt(
+                        pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)
+                    ) * d_4 * cos(theta3[i]),
+                    (P_z - d_1) * d_4 * cos(theta3[i]) + sqrt(
+                        pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)
+                    ) * (a_2 - d_4 * sin(theta3[i]))
+                );
+            }
+           
+        }
+    }
+
+
+    double theta4[16] = { 0, };
+    for (int i = 0; i < 2; i++)             // theta1 loop
+    {
+        for (int j = 0; j < 2; j++)         // theta3 loop
+        {
+            for (int k = 0; k < 2; k++)     // theta2 loop
+            {
+                for (int z = 0; z < 2; z++) // theta4 loop
+                {
+                    if (z) 
+                    {
+                        theta4[8 * i + 4 * j + 2 * k + z] = atan2(-1*(sin(theta1[i]) * kinematics_result[0][2] - cos(theta1[i]) * kinematics_result[1][2])
+                            ,
+                            (sin(theta2[2 * j + k] + theta3[j]) * kinematics_result[2][2] +
+                            sin(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * kinematics_result[1][2] +
+                            cos(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * kinematics_result[0][2]));
+                    }
+                    else
+                    {
+                        theta4[8 * i + 4 * j + 2 * k + z] = atan2(sin(theta1[i]) * kinematics_result[0][2] - cos(theta1[i]) * kinematics_result[1][2]
+                            ,
+                            -1 * (sin(theta2[2 * j + k] + theta3[j]) * kinematics_result[2][2] +
+                            sin(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * kinematics_result[1][2] +
+                            cos(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * kinematics_result[0][2]));
+                    }
+                    
+                }
+            }
+        }
+    }
 
 
 
+    printf("theta1_p : %f \t theta1_n : %f \n", RAD2DEGREE * theta1[0], RAD2DEGREE * theta1[1]);
+    printf("theta2_p_theta3_p : %f \t theta2_n_theta3_p : %f \n", RAD2DEGREE * theta2[0], RAD2DEGREE * theta2[0]);
+    printf("theta2_p_theta3_n : %f \t theta2_n_theta3_n : %f \n", RAD2DEGREE * theta2[0], RAD2DEGREE * theta2[0]);
+    printf("theta3_p : %f \t theta3_n : %f \n", RAD2DEGREE * theta3[0], RAD2DEGREE * theta3[0]);
+    for (int i = 0; i < 16; i++)
+    {
+        printf("theta4 : %f\n ", RAD2DEGREE*theta4[i]);
 
-
-    printf("theta1_p : %f \t theta1_n : %f \n", RAD2DEGREE * theta1_p, RAD2DEGREE * theta1_n);
-    printf("theta2_p_theta3_p : %f \t theta2_n_theta3_p : %f \n", RAD2DEGREE * theta2_p_theta3_p, RAD2DEGREE * theta2_n_theta3_p);
-    printf("theta2_p_theta3_n : %f \t theta2_n_theta3_n : %f \n", RAD2DEGREE * theta2_p_theta3_n, RAD2DEGREE * theta2_n_theta3_n);
-    printf("theta3_p : %f \t theta3_n : %f \n", RAD2DEGREE * theta3_p, RAD2DEGREE * theta3_n);
+    }
     return 0;
 }
 
