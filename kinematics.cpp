@@ -6,11 +6,11 @@ void multiply_matrix_4x4(double  first[][4], double  second[][4], double  result
 
 #define DEGREE2RAD 0.017453292
 #define RAD2DEGREE 57.29577951
-double  theta_1 = 10;
-double  theta_2 = 20;
-double  theta_3 = 30;
-double  theta_4 = 40;
-double  theta_5 = 0;
+double  theta_1 = 70;
+double  theta_2 = 70;
+double  theta_3 = 70;
+double  theta_4 = 44;
+double  theta_5 = 99.55;
 double  theta_6 = 0;
 
 double  d_1 = 2;
@@ -28,40 +28,40 @@ double  a_5 = 0;
 double  a_6 = 0;
 
 double  T_0to1[4][4] = { 
-                           {cos(DEGREE2RAD * theta_1)  ,0                               ,sin(DEGREE2RAD * theta_1)       ,0                  },
-                           {sin(DEGREE2RAD * theta_1)  ,0                               ,-1 * cos(DEGREE2RAD * theta_1)  ,0                  },
-                           {0                          ,1                               ,0                               ,d_1                },
-                           {0                          ,0                               ,0                               ,1                  } };
+                           {cos(DEGREE2RAD * theta_1)  ,0                               ,sin(DEGREE2RAD * theta_1)       ,0                               },
+                           {sin(DEGREE2RAD * theta_1)  ,0                               ,-1 * cos(DEGREE2RAD * theta_1)  ,0                               },
+                           {0                          ,1                               ,0                               ,d_1                             },
+                           {0                          ,0                               ,0                               ,1                               } };
 
 double  T_1to2[4][4] = { 
-                           {cos(DEGREE2RAD * theta_2)  ,-1 * sin(DEGREE2RAD * theta_2)  ,0                              ,a_2 * cos(DEGREE2RAD * theta_2) },
-                           {sin(DEGREE2RAD * theta_2)  ,cos(DEGREE2RAD * theta_2)       ,0                              ,a_2 * sin(DEGREE2RAD * theta_2) },
-                           {0                          ,0                               ,1                              ,d_2                             },
-                           {0                          ,0                               ,0                              ,1                               } };
+                           {cos(DEGREE2RAD * theta_2)  ,-1 * sin(DEGREE2RAD * theta_2)  ,0                               ,a_2 * cos(DEGREE2RAD * theta_2) },
+                           {sin(DEGREE2RAD * theta_2)  ,cos(DEGREE2RAD * theta_2)       ,0                               ,a_2 * sin(DEGREE2RAD * theta_2) },
+                           {0                          ,0                               ,1                               ,d_2                             },
+                           {0                          ,0                               ,0                               ,1                               } };
 
 double  T_2to3[4][4] = { 
-                           {cos(DEGREE2RAD * theta_3)   ,0                              ,-1 * sin(DEGREE2RAD * theta_3)  ,0                  },
-                           {sin(DEGREE2RAD * theta_3)   ,0                              ,cos(DEGREE2RAD * theta_3)       ,0                  },
-                           {0                           ,-1                             ,0                               ,0                  },
-                           {0                           ,0                              ,0                               ,1                  } };
+                           {cos(DEGREE2RAD * theta_3)   ,0                              ,-1 * sin(DEGREE2RAD * theta_3)  ,0                               },
+                           {sin(DEGREE2RAD * theta_3)   ,0                              ,cos(DEGREE2RAD * theta_3)       ,0                               },
+                           {0                           ,-1                             ,0                               ,0                               },
+                           {0                           ,0                              ,0                               ,1                               } };
 
 double  T_3to4[4][4] = { 
-                           {cos(DEGREE2RAD * theta_4)    ,0                 ,sin(DEGREE2RAD * theta_4)       ,0                  },
-                           {sin(DEGREE2RAD * theta_4)    ,0                 ,-1 * cos(DEGREE2RAD * theta_4)  ,0                  },
-                           {0               ,1                 ,0                  ,d_4                },
-                           {0               ,0                 ,0                  ,1                  } };
+                           {cos(DEGREE2RAD * theta_4)   ,0                              ,sin(DEGREE2RAD * theta_4)       ,0                               },
+                           {sin(DEGREE2RAD * theta_4)   ,0                              ,-1 * cos(DEGREE2RAD * theta_4)  ,0                               },
+                           {0                           ,1                              ,0                               ,d_4                             },
+                           {0                           ,0                              ,0                               ,1                               } };
 
 double  T_4to5[4][4] = { 
-                           {cos(DEGREE2RAD * theta_5)    ,0                 ,-1 * sin(DEGREE2RAD * theta_5)  ,0                  },
-                           {sin(DEGREE2RAD * theta_5)    ,0                 ,cos(DEGREE2RAD * theta_5)       ,0                  },
-                           {0               ,-1                ,0                  ,0                  },
-                           {0               ,0                 ,0                  ,1                  } };
+                           {cos(DEGREE2RAD * theta_5)   ,0                              ,-1 * sin(DEGREE2RAD * theta_5)  ,0                               },
+                           {sin(DEGREE2RAD * theta_5)   ,0                              ,cos(DEGREE2RAD * theta_5)       ,0                               },
+                           {0                           ,-1                             ,0                               ,0                               },
+                           {0                           ,0                              ,0                               ,1                               } };
 
 double  T_5to6[4][4] = { 
-                           {cos(DEGREE2RAD * theta_6)    ,-1 * sin(DEGREE2RAD * theta_6) ,0                  ,0                  },
-                           {sin(DEGREE2RAD * theta_6)    ,cos(DEGREE2RAD * theta_6)      ,0                  ,0                  },
-                           {0               ,0                 ,1                  ,d_6                },
-                           {0               ,0                 ,0                  ,1                  } };
+                           {cos(DEGREE2RAD * theta_6)   ,-1 * sin(DEGREE2RAD * theta_6) ,0                               ,0                               },
+                           {sin(DEGREE2RAD * theta_6)   ,cos(DEGREE2RAD * theta_6)      ,0                               ,0                               },
+                           {0                           ,0                              ,1                               ,d_6                             },
+                           {0                           ,0                              ,0                               ,1                               } };
 
 
 int PUMA_kinematics(int start, int end , double  result[][4]);
@@ -286,8 +286,8 @@ int PUMA_invers_kinematics(double  kinematics_result[][4], double  result_inv[6]
                                                             )
                          )
                      ) };
-    //theta3가 p인 경우
-    double theta2[4] = { atan2(
+    
+    /*/double theta2[4] = {atan2(
                                     (P_z - d_1) * (a_2 - d_4 * sin(theta3[0])) - sqrt(
                                                                                         pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)
                                                                                       ) * d_4 * cos(theta3[0]) ,
@@ -322,10 +322,11 @@ int PUMA_invers_kinematics(double  kinematics_result[][4], double  result_inv[6]
                                                                                 pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)
                                                                             ) * (a_2 - d_4 * sin(theta3[1]))
                                      )
-    };
-    for (int i = 0; i < 2; i++)
+    };*/
+    double theta2[4];
+    for (int i = 0; i < 2; i++)     // theta3 loop
     {
-        for (int j = 0; j < 2; j++)
+        for (int j = 0; j < 2; j++) // theta2 loop
         {
             if (j)
             {
@@ -373,7 +374,7 @@ int PUMA_invers_kinematics(double  kinematics_result[][4], double  result_inv[6]
                     }
                     else
                     {
-                        theta4[8 * i + 4 * j + 2 * k + z] = atan2(sin(theta1[i]) * kinematics_result[0][2] - cos(theta1[i]) * kinematics_result[1][2]
+                        theta4[8 * i + 4 * j + 2 * k + z] = atan2((sin(theta1[i]) * kinematics_result[0][2] - cos(theta1[i]) * kinematics_result[1][2])
                             ,
                             -1 * (sin(theta2[2 * j + k] + theta3[j]) * kinematics_result[2][2] +
                             sin(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * kinematics_result[1][2] +
@@ -385,16 +386,91 @@ int PUMA_invers_kinematics(double  kinematics_result[][4], double  result_inv[6]
         }
     }
 
+    /*theta4[0] = atan2(-1 * (sin(theta1[1]) * kinematics_result[0][2] - cos(theta1[1]) * kinematics_result[1][2])
+        ,
+        1*((sin(theta2[1] + theta3[0]) * kinematics_result[2][2] +
+            sin(theta1[1]) * cos(theta2[1] + theta3[0]) * kinematics_result[1][2] +
+            cos(theta1[1]) * cos(theta2[1] + theta3[0]) * kinematics_result[0][2])));
+    theta4[1] = atan2(1 * (sin(theta1[1]) * kinematics_result[0][2] - cos(theta1[1]) * kinematics_result[1][2])
+        ,
+        -1 * ((sin(theta2[1] + theta3[0]) * kinematics_result[2][2] +
+            sin(theta1[1]) * cos(theta2[1] + theta3[0]) * kinematics_result[1][2] +
+            cos(theta1[1]) * cos(theta2[1] + theta3[0]) * kinematics_result[0][2])));*/
+    double theta5[16] = { 0, };
+    for (int i = 0; i < 2; i++)             // theta1 loop
+    {
+        for (int j = 0; j < 2; j++)         // theta3 loop
+        {
+            for (int k = 0; k < 2; k++)     // theta2 loop
+            {
+                for (int z = 0; z < 2; z++) // theta4 loop
+                {
+                    theta5[8 * i + 4 * j + 2 * k + z] = atan2(- 1 * kinematics_result[0][2] * (cos(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * cos(theta4[8 * i + 4 * j + 2 * k + z]) - sin(theta1[i]) * sin(theta4[8 * i + 4 * j + 2 * k + z]))
+                                                              - 1 * kinematics_result[1][2] * (sin(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * cos(theta4[8 * i + 4 * j + 2 * k + z]) + cos(theta1[i]) * sin(theta4[8 * i + 4 * j + 2 * k + z]))
+                                                              - 1 * kinematics_result[2][2] * (sin(theta2[2 * j + k] + theta3[j]) * sin(theta4[8 * i + 4 * j + 2 * k + z]))
+                        ,
+                          kinematics_result[0][2] * (-1 * cos(theta1[i]) * sin(theta2[2 * j + k] + theta3[j]))
+                        + kinematics_result[1][2] * (-1 * sin(theta1[i]) * sin(theta2[2 * j + k] + theta3[j]))
+                        + kinematics_result[2][2] * cos(theta2[2 * j + k] + theta3[j])
+                    );
+
+                }
+            }
+        }
+    }
+
+    double theta6[16] = { 0, };
+    for (int i = 0; i < 2; i++)             // theta1 loop
+    {
+        for (int j = 0; j < 2; j++)         // theta3 loop
+        {
+            for (int k = 0; k < 2; k++)     // theta2 loop
+            {
+                for (int z = 0; z < 2; z++) // theta4 loop
+                {
+                    theta6[8 * i + 4 * j + 2 * k + z] = atan2(- 1 * kinematics_result[0][0] * (cos(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * cos(theta4[8 * i + 4 * j + 2 * k + z]) - sin(theta1[i]) * sin(theta4[8 * i + 4 * j + 2 * k + z]))
+                                                              - 1 * kinematics_result[1][2] * (sin(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * cos(theta4[8 * i + 4 * j + 2 * k + z]) + cos(theta1[i]) * sin(theta4[8 * i + 4 * j + 2 * k + z]))
+                                                              - 1 * kinematics_result[2][2] * (sin(theta2[2 * j + k] + theta3[j]) * sin(theta4[8 * i + 4 * j + 2 * k + z]))
+                        ,
+                        kinematics_result[0][2] * (-1 * cos(theta1[i]) * sin(theta2[2 * j + k] + theta3[j]))
+                        + kinematics_result[1][2] * (-1 * sin(theta1[i]) * sin(theta2[2 * j + k] + theta3[j]))
+                        + kinematics_result[2][2] * cos(theta2[2 * j + k] + theta3[j])
+                    );
+
+                }
+            }
+        }
+    }
+
+
+
+
 
 
     printf("theta1_p : %f \t theta1_n : %f \n", RAD2DEGREE * theta1[0], RAD2DEGREE * theta1[1]);
-    printf("theta2_p_theta3_p : %f \t theta2_n_theta3_p : %f \n", RAD2DEGREE * theta2[0], RAD2DEGREE * theta2[0]);
-    printf("theta2_p_theta3_n : %f \t theta2_n_theta3_n : %f \n", RAD2DEGREE * theta2[0], RAD2DEGREE * theta2[0]);
-    printf("theta3_p : %f \t theta3_n : %f \n", RAD2DEGREE * theta3[0], RAD2DEGREE * theta3[0]);
+    printf("theta2_p_theta3_p : %f \t theta2_n_theta3_p : %f \n", RAD2DEGREE * theta2[0], RAD2DEGREE * theta2[1]);
+    printf("theta2_p_theta3_n : %f \t theta2_n_theta3_n : %f \n", RAD2DEGREE * theta2[2], RAD2DEGREE * theta2[3]);
+    printf("theta3_p : %f \t theta3_n : %f \n \n", RAD2DEGREE * theta3[0], RAD2DEGREE * theta3[1]);
+
+    for (int i = 0; i < 2; i++)             // theta1 loop
+    {
+        for (int j = 0; j < 2; j++)         // theta3 loop
+        {
+            for (int k = 0; k < 2; k++)     // theta2 loop
+            {
+                for (int z = 0; z < 2; z++) // theta4 loop
+                {
+                    printf("[%d] theta1 : %f theta2 : %f theta3 : %f theta4 : %f theta5 : %f\n", 8 * i + 4 * j + 2 * k + z,
+                        RAD2DEGREE* theta1[i], RAD2DEGREE* theta2[2*j+k], RAD2DEGREE* theta3[j], RAD2DEGREE* theta4[8 * i + 4 * j + 2 * k + z], RAD2DEGREE* theta5[8 * i + 4 * j + 2 * k + z]);
+
+
+                }
+            }
+        }
+    }
     for (int i = 0; i < 16; i++)
     {
-        printf("theta4 : %f\n ", RAD2DEGREE*theta4[i]);
-
+       
     }
     return 0;
 }
