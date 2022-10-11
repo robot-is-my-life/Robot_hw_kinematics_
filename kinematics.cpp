@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <math.h>
 
-
-#include <stdlib.h> // for rand
+// for rand
+#include <stdlib.h> 
 #include <time.h> //time()
 
 
@@ -18,7 +18,7 @@ double  theta_4 = 0;
 double  theta_5 = 0;
 double  theta_6 = 0;
 
-double  d_1 = 2;
+double  d_1 = 1;
 double  d_2 = 1;
 double  d_3 = 0;
 double  d_4 = 1;
@@ -34,13 +34,15 @@ double  a_6 = 0;
 
 
 
-int PUMA_kinematics(int start, int end, double  result[][4], double T_0to1[][4], double T_1to2[][4], double T_2to3[][4], double T_3to4[][4], double T_4to5[][4], double T_5to6[][4]);
+int PUMA_kinematics(int start, int end, double  result[][4], double theta_1, double theta_2, double theta_3, double theta_4, double theta_5, double theta_6);
 int PUMA_invers_kinematics(double  kinematics_result[][4], double  result_inv[6]);
 
 void main()
 {
     double    result[4][4] = { 0, }; // kinematics 출력 (4x4 matrix) 
     double    result_inv[6] = { 0, }; // inverse kinematics 출력 (각도값)
+
+    //랜덤변수 입력 0~90
     srand((unsigned int)time(NULL));
 
     theta_1 = rand() % 90;
@@ -49,13 +51,60 @@ void main()
     theta_4 = rand() % 90;
     theta_5 = rand() % 90;
     theta_6 = rand() % 90;
+    
+    /*
+    theta_1 = 0;
+    theta_2 = 90;
+    theta_3 = 0;
+    theta_4 = 0;
+    theta_5 = 90;
+    theta_6 = 0;
+    */
+    PUMA_kinematics(0, 6, result, theta_1, theta_2, theta_3, theta_4, theta_5, theta_6);
+    printf("Kinematics!!!!\n\n");
+    printf("n \t\to \t\ta \t\tp \n");
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            printf("%f \t", result[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+
+    printf("Inverse Kinematics!!!!\n\n");
+    PUMA_invers_kinematics(result, result_inv);
 
 
+    printf("\n해 검증 (Inverse Kinematics함수로 출력된 각도값을 다시 Kinematics 모델에 대입) \n");
+    PUMA_kinematics(0, 6, result, result_inv[0], result_inv[1], result_inv[2], result_inv[3], result_inv[4], result_inv[5]);
+
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            printf("%f \t", result[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+
+}
+
+
+int PUMA_kinematics(int start, int end, double  result[][4], double theta_1, double theta_2, double theta_3, double theta_4, double theta_5, double theta_6)
+{
+    if (end - start < 2)
+    {
+        printf("잘못된 입력\n");
+        return 0;
+    }
     double  T_0to1[4][4] = {
-                           {cos(DEGREE2RAD * theta_1)  ,0                               ,sin(DEGREE2RAD * theta_1)       ,0                               },
-                           {sin(DEGREE2RAD * theta_1)  ,0                               ,-1 * cos(DEGREE2RAD * theta_1)  ,0                               },
-                           {0                          ,1                               ,0                               ,d_1                             },
-                           {0                          ,0                               ,0                               ,1                               } };
+                          {cos(DEGREE2RAD * theta_1)  ,0                               ,sin(DEGREE2RAD * theta_1)       ,0                               },
+                          {sin(DEGREE2RAD * theta_1)  ,0                               ,-1 * cos(DEGREE2RAD * theta_1)  ,0                               },
+                          {0                          ,1                               ,0                               ,d_1                             },
+                          {0                          ,0                               ,0                               ,1                               } };
 
     double  T_1to2[4][4] = {
                                {cos(DEGREE2RAD * theta_2)  ,-1 * sin(DEGREE2RAD * theta_2)  ,0                               ,a_2 * cos(DEGREE2RAD * theta_2) },
@@ -87,125 +136,48 @@ void main()
                                {0                           ,0                              ,1                               ,d_6                             },
                                {0                           ,0                              ,0                               ,1                               } };
 
-   /* double  a[4][4] = {{1, 3, 5, 7}, {4, 7, 1, 2}, {3, 4, 5, 6}, {4, 7, 5, 7}};
-    double  b[4][4] = { {2, 4, 6, 8}, {1, 3, 5, 7}, {1, 2, 2, 9}, {1, 9, 9 ,8} };
 
-        for (int i = 0; i < 1; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                printf("%f \t", a[i][j]);
-            }
-            printf("\n");
-        }
-        */
-
-
-
-
-
-
-    
-    //multiply_matrix_4x4(a, b, result);
-
-    // for debug
-
-    /*
-    for (int i = 0; i < 6; i++)
-    {
-        for (int j = 0; j < 6; j++)
-        {
-            if (PUMA_kinematics(i, j, result))
-            {
-                for (int i = 0; i < 4; i++)
-                {
-                    for (int j = 0; j < 4; j++)
-                    {
-                        printf("%f \t", result[i][j]);
-                    }
-                    printf("\n");
-                }
-                printf("\n");
-            }
-        }
-
-    }
-    */
-    // for debug
-    
-    //printf("sin 1/2 : %f \n " ,sin(3.141592 / 6));
-    //printf("degree to rad : %f \n ", sin(DEGREE2RAD*30));
-    //printf("rad to degree : %f \n ", 3.141592 /6 *RAD2DEGREE);
-    //printf("atan 30도 : %f \n ", RAD2DEGREE*atan2(1,sqrt(3)));
-    PUMA_kinematics(0, 6, result, T_0to1, T_1to2, T_2to3, T_3to4, T_4to5, T_5to6);
-    printf("Kinematics!!!!\n\n");
-    printf("n \t\to \t\ta \t\tp \n");
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
-            printf("%f \t", result[i][j]);
-        }
-        printf("\n");
-    }
-    printf("\n");
-
-    printf("Inverse Kinematics!!!!\n\n");
-    PUMA_invers_kinematics(result, result_inv);
-}
-
-
-int PUMA_kinematics(int start , int end , double  result[][4] ,double T_0to1[][4], double T_1to2[][4], double T_2to3[][4], double T_3to4[][4], double T_4to5[][4], double T_5to6[][4])
-{
-    if (end - start < 2 )
-    {
-        printf("잘못된 입력\n");
-        return 0;
-    }
-
-    
-    
-    double  arr_tmp[4][4]  = { 0 };
+    double  arr_tmp[4][4] = { 0 };
     double  arr_tmp1[4][4] = { 0 };
     double  arr_tmp2[4][4] = { 0 };
     double  arr_tmp3[4][4] = { 0 };
     double  arr_tmp4[4][4] = { 0 };
     double  arr_tmp5[4][4] = { 0 };
     double  arr_tmp6[4][4] = { 0 };
-    
+
 
 
     if (start == 0)
     {
-        multiply_matrix_4x4(T_0to1  , T_1to2, arr_tmp);
-        multiply_matrix_4x4(arr_tmp , T_2to3, arr_tmp1);
+        multiply_matrix_4x4(T_0to1, T_1to2, arr_tmp);
+        multiply_matrix_4x4(arr_tmp, T_2to3, arr_tmp1);
         multiply_matrix_4x4(arr_tmp1, T_3to4, arr_tmp2);
         multiply_matrix_4x4(arr_tmp2, T_4to5, arr_tmp3);
         multiply_matrix_4x4(arr_tmp3, T_5to6, arr_tmp4);
     }
     else if (start == 1)
     {
-        multiply_matrix_4x4(T_1to2  , T_2to3, arr_tmp1);
+        multiply_matrix_4x4(T_1to2, T_2to3, arr_tmp1);
         multiply_matrix_4x4(arr_tmp1, T_3to4, arr_tmp2);
         multiply_matrix_4x4(arr_tmp2, T_4to5, arr_tmp3);
         multiply_matrix_4x4(arr_tmp3, T_5to6, arr_tmp4);
     }
     else if (start == 2)
     {
-        multiply_matrix_4x4(T_2to3  , T_3to4, arr_tmp2);
+        multiply_matrix_4x4(T_2to3, T_3to4, arr_tmp2);
         multiply_matrix_4x4(arr_tmp2, T_4to5, arr_tmp3);
         multiply_matrix_4x4(arr_tmp3, T_5to6, arr_tmp4);
     }
     else if (start == 3)
     {
-        multiply_matrix_4x4(T_3to4  , T_4to5, arr_tmp3);
+        multiply_matrix_4x4(T_3to4, T_4to5, arr_tmp3);
         multiply_matrix_4x4(arr_tmp3, T_5to6, arr_tmp4);
     }
     else if (start == 4)
     {
-        multiply_matrix_4x4(T_4to5  , T_5to6, arr_tmp4);
+        multiply_matrix_4x4(T_4to5, T_5to6, arr_tmp4);
     }
-    
+
 
 
     if (end == 2)
@@ -276,7 +248,7 @@ int PUMA_invers_kinematics(double  kinematics_result[][4], double  result_inv[6]
     //PUMA_kinematics(0,3)
     //printf("Px_err : ", P_x - );
 
-  
+
 
 
     double theta1[2] = { atan2(P_y * sqrt(pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)) + P_x * d_2,
@@ -304,7 +276,7 @@ int PUMA_invers_kinematics(double  kinematics_result[][4], double  result_inv[6]
                                                             )
                          )
                      ) };
-    
+
     /*/double theta2[4] = {atan2(
                                     (P_z - d_1) * (a_2 - d_4 * sin(theta3[0])) - sqrt(
                                                                                         pow(P_x, 2) + pow(P_y, 2) - pow(d_2, 2)
@@ -368,7 +340,7 @@ int PUMA_invers_kinematics(double  kinematics_result[][4], double  result_inv[6]
                     ) * (a_2 - d_4 * sin(theta3[i]))
                 );
             }
-           
+
         }
     }
 
@@ -384,21 +356,21 @@ int PUMA_invers_kinematics(double  kinematics_result[][4], double  result_inv[6]
             {
                 for (int z = 0; z < 2; z++) // theta4 loop
                 {
-                    if (z) 
+                    if (z)
                     {
-                        theta4[8 * i + 4 * j + 2 * k + z] = atan2(-1*(sin(theta1[i]) * kinematics_result[0][2] - cos(theta1[i]) * kinematics_result[1][2])
+                        theta4[8 * i + 4 * j + 2 * k + z] = atan2(-1 * (sin(theta1[i]) * kinematics_result[0][2] - cos(theta1[i]) * kinematics_result[1][2])
                             ,
                             (sin(theta2[2 * j + k] + theta3[j]) * kinematics_result[2][2] +
-                            sin(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * kinematics_result[1][2] +
-                            cos(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * kinematics_result[0][2]));
+                                sin(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * kinematics_result[1][2] +
+                                cos(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * kinematics_result[0][2]));
                     }
                     else
                     {
                         theta4[8 * i + 4 * j + 2 * k + z] = atan2((sin(theta1[i]) * kinematics_result[0][2] - cos(theta1[i]) * kinematics_result[1][2])
                             ,
                             -1 * (sin(theta2[2 * j + k] + theta3[j]) * kinematics_result[2][2] +
-                            sin(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * kinematics_result[1][2] +
-                            cos(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * kinematics_result[0][2]));
+                                sin(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * kinematics_result[1][2] +
+                                cos(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * kinematics_result[0][2]));
                     }
 
                 }
@@ -413,22 +385,52 @@ int PUMA_invers_kinematics(double  kinematics_result[][4], double  result_inv[6]
             {
                 for (int z = 0; z < 2; z++) // theta4 loop
                 {
-                    theta5[8 * i + 4 * j + 2 * k + z] = atan2(-1 * kinematics_result[0][2] * (cos(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * cos(theta4[8 * i + 4 * j + 2 * k + z]) - sin(theta1[i]) * sin(theta4[8 * i + 4 * j + 2 * k + z]))
+                    theta5[8 * i + 4 * j + 2 * k + z] = atan2(
+                        - 1 * kinematics_result[0][2] * (cos(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * cos(theta4[8 * i + 4 * j + 2 * k + z]) - sin(theta1[i]) * sin(theta4[8 * i + 4 * j + 2 * k + z]))
                         - 1 * kinematics_result[1][2] * (sin(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * cos(theta4[8 * i + 4 * j + 2 * k + z]) + cos(theta1[i]) * sin(theta4[8 * i + 4 * j + 2 * k + z]))
-                        - 1 * kinematics_result[2][2] * (sin(theta2[2 * j + k] + theta3[j]) * sin(theta4[8 * i + 4 * j + 2 * k + z]))
+                        - 1 * kinematics_result[2][2] * (sin(theta2[2 * j + k] + theta3[j]) * cos(theta4[8 * i + 4 * j + 2 * k + z]))
                         ,
                         kinematics_result[0][2] * (-1 * cos(theta1[i]) * sin(theta2[2 * j + k] + theta3[j]))
                         + kinematics_result[1][2] * (-1 * sin(theta1[i]) * sin(theta2[2 * j + k] + theta3[j]))
                         + kinematics_result[2][2] * cos(theta2[2 * j + k] + theta3[j])
                     );
 
-                    theta6[8 * i + 4 * j + 2 * k + z] = atan2(-1 * kinematics_result[0][0] * (cos(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * sin(theta4[8 * i + 4 * j + 2 * k + z]) + sin(theta1[i]) * cos(theta4[8 * i + 4 * j + 2 * k + z]))
-                        - 1 * kinematics_result[1][0] * (sin(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * sin(theta4[8 * i + 4 * j + 2 * k + z]) - cos(theta1[i]) * cos(theta4[8 * i + 4 * j + 2 * k + z]))
+                    double y5_x = 
+                        cos(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * sin(theta4[8 * i + 4 * j + 2 * k + z])
+                        + sin(theta1[i]) * cos(theta4[8 * i + 4 * j + 2 * k + z]);
+
+                    double y5_y = sin(theta1[i])* cos(theta2[2 * j + k] + theta3[j])* sin(theta4[8 * i + 4 * j + 2 * k + z])
+                        - cos(theta1[i]) * cos(theta4[8 * i + 4 * j + 2 * k + z]);
+
+                    double y5_z = sin(theta2[2 * j + k] + theta3[j])* sin(theta4[8 * i + 4 * j + 2 * k + z]);
+
+                    theta6[8 * i + 4 * j + 2 * k + z] = atan2(-1 * y5_x * kinematics_result[0][0] - 1 * y5_y * kinematics_result[1][0] - 1 * y5_z * kinematics_result[2][0]
                         ,
-                        -1 * kinematics_result[0][1] * (cos(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * sin(theta4[8 * i + 4 * j + 2 * k + z]) + sin(theta1[i]) * cos(theta4[8 * i + 4 * j + 2 * k + z]))
-                        - 1 * kinematics_result[1][1] * (sin(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * sin(theta4[8 * i + 4 * j + 2 * k + z]) - cos(theta1[i]) * cos(theta4[8 * i + 4 * j + 2 * k + z]))
-                        - 1 * kinematics_result[2][1] * (sin(theta2[2 * j + k] + theta3[j]) * sin(theta4[8 * i + 4 * j + 2 * k + z]))
+                        -1 * y5_x * kinematics_result[0][1] - 1 * y5_y * kinematics_result[1][1] - 1 * y5_z * kinematics_result[2][1]);
+                    /*
+                    theta6[8 * i + 4 * j + 2 * k + z] = atan2(
+                        - 1 *  (
+                            cos(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * sin(theta4[8 * i + 4 * j + 2 * k + z]) 
+                            + sin(theta1[i]) * cos(theta4[8 * i + 4 * j + 2 * k + z])
+                            )* kinematics_result[0][0]
+                        - 1 * (
+                            sin(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * sin(theta4[8 * i + 4 * j + 2 * k + z]) 
+                            - cos(theta1[i]) * cos(theta4[8 * i + 4 * j + 2 * k + z])
+                            ) * kinematics_result[1][0] 
+                        ,
+                        - 1 * (
+                            cos(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * sin(theta4[8 * i + 4 * j + 2 * k + z]) 
+                            + sin(theta1[i]) * cos(theta4[8 * i + 4 * j + 2 * k + z])
+                            )* kinematics_result[0][1]
+                        - 1 *  (
+                            sin(theta1[i]) * cos(theta2[2 * j + k] + theta3[j]) * sin(theta4[8 * i + 4 * j + 2 * k + z]) 
+                            - cos(theta1[i]) * cos(theta4[8 * i + 4 * j + 2 * k + z])
+                            )* kinematics_result[1][1]
+                        - 1 *  (
+                            sin(theta2[2 * j + k] + theta3[j]) * sin(theta4[8 * i + 4 * j + 2 * k + z])
+                            ) * kinematics_result[2][1]
                     );
+                    */
                 }
             }
         }
@@ -444,17 +446,17 @@ int PUMA_invers_kinematics(double  kinematics_result[][4], double  result_inv[6]
         -1 * ((sin(theta2[1] + theta3[0]) * kinematics_result[2][2] +
             sin(theta1[1]) * cos(theta2[1] + theta3[0]) * kinematics_result[1][2] +
             cos(theta1[1]) * cos(theta2[1] + theta3[0]) * kinematics_result[0][2])));*/
-    
-   
 
 
 
 
 
-    //printf("theta1_p : %f \t theta1_n : %f \n", RAD2DEGREE * theta1[0], RAD2DEGREE * theta1[1]);
-    //printf("theta2_p_theta3_p : %f \t theta2_n_theta3_p : %f \n", RAD2DEGREE * theta2[0], RAD2DEGREE * theta2[1]);
-    //printf("theta2_p_theta3_n : %f \t theta2_n_theta3_n : %f \n", RAD2DEGREE * theta2[2], RAD2DEGREE * theta2[3]);
-    //printf("theta3_p : %f \t theta3_n : %f \n \n", RAD2DEGREE * theta3[0], RAD2DEGREE * theta3[1]);
+
+
+            //printf("theta1_p : %f \t theta1_n : %f \n", RAD2DEGREE * theta1[0], RAD2DEGREE * theta1[1]);
+            //printf("theta2_p_theta3_p : %f \t theta2_n_theta3_p : %f \n", RAD2DEGREE * theta2[0], RAD2DEGREE * theta2[1]);
+            //printf("theta2_p_theta3_n : %f \t theta2_n_theta3_n : %f \n", RAD2DEGREE * theta2[2], RAD2DEGREE * theta2[3]);
+            //printf("theta3_p : %f \t theta3_n : %f \n \n", RAD2DEGREE * theta3[0], RAD2DEGREE * theta3[1]);
 
     for (int i = 0; i < 2; i++)             // theta1 loop
     {
@@ -464,15 +466,15 @@ int PUMA_invers_kinematics(double  kinematics_result[][4], double  result_inv[6]
             {
                 for (int z = 0; z < 2; z++) // theta4 loop
                 {
-                    /*printf("[%d] theta1 : %.2lf theta2 : %.2lf theta3 : %.2lf theta4 : %.2lf theta5 : %.2lf theta6 : %.2lf\n", 8 * i + 4 * j + 2 * k + z,
-                        RAD2DEGREE* theta1[i], RAD2DEGREE* theta2[2*j+k], RAD2DEGREE* theta3[j], 
-                        RAD2DEGREE* theta4[8 * i + 4 * j + 2 * k + z], RAD2DEGREE* theta5[8 * i + 4 * j + 2 * k + z], RAD2DEGREE* theta6[8 * i + 4 * j + 2 * k + z]);*/
-
-
+                   // printf("[%d] theta1 : %.2lf theta2 : %.2lf theta3 : %.2lf theta4 : %.2lf theta5 : %.2lf theta6 : %.2lf\n", 8 * i + 4 * j + 2 * k + z,
+                   //     RAD2DEGREE * theta1[i], RAD2DEGREE * theta2[2 * j + k], RAD2DEGREE * theta3[j],
+                   //     RAD2DEGREE * theta4[8 * i + 4 * j + 2 * k + z], RAD2DEGREE * theta5[8 * i + 4 * j + 2 * k + z], RAD2DEGREE * theta6[8 * i + 4 * j + 2 * k + z]);
                 }
             }
         }
     }
+
+
 
     double angle_err_sum[16] = { 0, };
 
@@ -512,9 +514,19 @@ int PUMA_invers_kinematics(double  kinematics_result[][4], double  result_inv[6]
         theta_4, theta_5, theta_6);
     printf("\n입력한 각도와 가장 유사한 해는 \n ");
     printf("[  %d  ] \ntheta1 : %.2lf \ntheta2 : %.2lf \ntheta3 : %.2lf \ntheta4 : %.2lf \ntheta5 : %.2lf \ntheta6 : %.2lf\n", min_num,
-        RAD2DEGREE* theta1[min_num/8], RAD2DEGREE* theta2[min_num%8/2], RAD2DEGREE* theta3[min_num % 8 /4],
-        RAD2DEGREE* theta4[min_num], RAD2DEGREE* theta5[min_num], RAD2DEGREE* theta6[min_num]);
+        RAD2DEGREE * theta1[min_num / 8], RAD2DEGREE * theta2[min_num % 8 / 2], RAD2DEGREE * theta3[min_num % 8 / 4],
+        RAD2DEGREE * theta4[min_num], RAD2DEGREE * theta5[min_num], RAD2DEGREE * theta6[min_num]);
+    result_inv[0] = RAD2DEGREE * theta1[min_num / 8];
+    result_inv[1] = RAD2DEGREE * theta2[min_num % 8 / 2];
+    result_inv[2] = RAD2DEGREE * theta3[min_num % 8 / 4];
+    result_inv[3] = RAD2DEGREE * theta4[min_num];
+    result_inv[4] = RAD2DEGREE * theta5[min_num];
+    result_inv[5] = RAD2DEGREE * theta6[min_num];
     printf("입니다. \n ");
+
+
+    double result[4][4] = { 0, };
+
     return 0;
 }
 
