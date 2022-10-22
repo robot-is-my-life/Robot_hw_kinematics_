@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="inverse_kinematics.cpp" />
     <ClCompile Include="PUMA_kinematics.cpp" />
     <ClCompile Include="kinematics_easy_form.cpp" />
     <ClCompile Include="utility.cpp" />

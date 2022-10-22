@@ -8,6 +8,20 @@ extern void multiply_matrix_4x4(double  first[][4], double  second[][4], double 
 extern void copy_matrix_A2B_4x4(double A[][4], double B[][4]);										// 4X4 행렬 매트릭스 카피
 extern void print_matrix_4x4(double matrix[][4]);													// 4X4 행렬 출력
 extern void init_matrix_4x4(double matrix[][4]);													// 4X4 행렬 초기화.
+
+
+
+extern double T[6][4][4];
+extern double theta[6];
+extern double d[6];
+extern double alpha[6];
+extern double a[6];
+
+
+
+
+
+
 void kinematics_matrix_DH_notation(double theta, double d, double alpha, double a, double matrix[][4]) // input : DH parameters & 4x4 matrix for memorized output
 {
 	double tmp[4][4]
@@ -22,13 +36,9 @@ void kinematics_matrix_DH_notation(double theta, double d, double alpha, double 
 
 }
 
-void PUMA_kinematics_easy()
+void PUMA_kinematics_easy(double output[][4])
 {
-	double T[6][4][4] = { '\0', };
-	double theta[6]	  = { 0,0,-90,0,0,0 };
-	double d[6] = { 1,1,0,1,0,1 };
-	double alpha[6] = { 90,0,-90,90,-90,0 };
-	double a[6] = { 0,1,0,0,0,0 };
+
 
 
 	double tmp[4][4] = { '\0', };
@@ -45,8 +55,8 @@ void PUMA_kinematics_easy()
 		init_matrix_4x4(result);
 	}
 
-	printf("Kinematics! (easy form) !!!\n\n");
-	printf("n \t\to \t\ta \t\tp \n");
-	print_matrix_4x4(tmp);
-
+	//printf("Kinematics! (easy form) !!!\n\n");
+	//printf("n \t\to \t\ta \t\tp \n");
+	//print_matrix_4x4(tmp);
+	copy_matrix_A2B_4x4(tmp, output);
 }
