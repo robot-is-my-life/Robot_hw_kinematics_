@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <math.h>
 
-#define DEGREE2RAD  0.017453292
-#define RAD2DEGREE  57.29577951
+#define DEGREE2RAD 0.017453292
+#define RAD2DEGREE 57.29577951
 #define OFFSET      0.000001
 extern double T[6][4][4];
 extern double theta[6];
@@ -46,9 +46,9 @@ int PUMA_invers_kinematics(double  kinematics_result[][4], double  result_inv[6]
                                                             )
                          )
                      ) };
-    printf("\n\n  sqrt : %lf \n\n ", OFFSET +
-        4 * pow(a[1], 2) * pow(d[3], 2) - 1 * pow(pow(P_x, 2) + pow(P_y, 2) + pow(P_z - d[0], 2) - pow(d[3], 2) - pow(a[1], 2) - pow(d[1], 2), 2)
-    );
+    //printf("\n\n  sqrt : %lf \n\n ", OFFSET +
+    //    4 * pow(a[1], 2) * pow(d[3], 2) - 1 * pow(pow(P_x, 2) + pow(P_y, 2) + pow(P_z - d[0], 2) - pow(d[3], 2) - pow(a[1], 2) - pow(d[1], 2), 2)
+    //);
     /*/double theta2[4] = {atan2(
                                     (P_z - d[0]) * (a[1] - d[3] * sin(theta3[0])) - sqrt(OFFSET+
                                                                                         pow(P_x, 2) + pow(P_y, 2) - pow(d[1], 2)
@@ -238,9 +238,9 @@ int PUMA_invers_kinematics(double  kinematics_result[][4], double  result_inv[6]
             {
                 for (int z = 0; z < 2; z++) // theta4 loop
                 {
-                    printf("[%d] theta1 : %.2lf theta2 : %.2lf theta3 : %.2lf theta4 : %.2lf theta5 : %.2lf theta6 : %.2lf\n", 8 * i + 4 * j + 2 * k + z,
-                        RAD2DEGREE * theta1[i], RAD2DEGREE * theta2[2 * j + k], RAD2DEGREE * theta3[j],
-                         RAD2DEGREE * theta4[8 * i + 4 * j + 2 * k + z], RAD2DEGREE * theta5[8 * i + 4 * j + 2 * k + z], RAD2DEGREE * theta6[8 * i + 4 * j + 2 * k + z]);
+                    //printf("[%d] theta1 : %.2lf theta2 : %.2lf theta3 : %.2lf theta4 : %.2lf theta5 : %.2lf theta6 : %.2lf\n", 8 * i + 4 * j + 2 * k + z,
+                    //    RAD2DEGREE * theta1[i], RAD2DEGREE * theta2[2 * j + k], RAD2DEGREE * theta3[j],
+                    //     RAD2DEGREE * theta4[8 * i + 4 * j + 2 * k + z], RAD2DEGREE * theta5[8 * i + 4 * j + 2 * k + z], RAD2DEGREE * theta6[8 * i + 4 * j + 2 * k + z]);
                 }
             }
         }
@@ -279,7 +279,7 @@ int PUMA_invers_kinematics(double  kinematics_result[][4], double  result_inv[6]
             min_num = i;
         }
     }
-
+    
     printf("\n입력한 각도\n ");
     printf("[Input] \ntheta1 : %.2lf \ntheta2 : %.2lf \ntheta3 : %.2lf \ntheta4 : %.2lf \ntheta5 : %.2lf \ntheta6 : %.2lf\n",
         theta[0], theta[1], theta[2],
@@ -288,15 +288,16 @@ int PUMA_invers_kinematics(double  kinematics_result[][4], double  result_inv[6]
     printf("[  %d  ] \ntheta1 : %.2lf \ntheta2 : %.2lf \ntheta3 : %.2lf \ntheta4 : %.2lf \ntheta5 : %.2lf \ntheta6 : %.2lf\n", min_num,
         RAD2DEGREE * theta1[min_num / 8], RAD2DEGREE * theta2[min_num % 8 / 2], RAD2DEGREE * theta3[min_num % 8 / 4],
         RAD2DEGREE * theta4[min_num], RAD2DEGREE * theta5[min_num], RAD2DEGREE * theta6[min_num]);
+        
     result_inv[0] = RAD2DEGREE * theta1[min_num / 8];
     result_inv[1] = RAD2DEGREE * theta2[min_num % 8 / 2];
     result_inv[2] = RAD2DEGREE * theta3[min_num % 8 / 4];
     result_inv[3] = RAD2DEGREE * theta4[min_num];
     result_inv[4] = RAD2DEGREE * theta5[min_num];
     result_inv[5] = RAD2DEGREE * theta6[min_num];
-    printf("입니다. \n ");
-
-
+    //printf("입니다. \n ");
+    
+    
     double result[4][4] = { 0, };
 
     return 0;

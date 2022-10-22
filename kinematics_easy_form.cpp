@@ -19,14 +19,11 @@ extern double a[6];
 
 
 
-
-
-
 void kinematics_matrix_DH_notation(double theta, double d, double alpha, double a, double matrix[][4]) // input : DH parameters & 4x4 matrix for memorized output
 {
 	double tmp[4][4]
-		= { {cos(theta)	,-1 * sin(theta) * cos(alpha)	,sin(theta) * sin(alpha)		,a * cos(alpha)	},
-			{sin(theta)	,cos(theta) * cos(alpha)		,-1 * cos(theta) * sin(alpha)	,a * sin(alpha)	},
+		= { {cos(theta)	,-1 * sin(theta) * cos(alpha)	,sin(theta) * sin(alpha)		,a * cos(theta)	},
+			{sin(theta)	,cos(theta) * cos(alpha)		,-1 * cos(theta) * sin(alpha)	,a * sin(theta)	},
 			{0			,sin(alpha)						, cos(alpha)					,d				},
 			{0			,0								,0								,1				} };
 
@@ -35,7 +32,6 @@ void kinematics_matrix_DH_notation(double theta, double d, double alpha, double 
 	copy_matrix_A2B_4x4(tmp, matrix);
 
 }
-
 void PUMA_kinematics_easy(double output[][4])
 {
 

@@ -60,3 +60,16 @@ void init_matrix_4x4(double matrix[][4])
         }
     }
 }
+
+double compare_matrix_4x4(double A[][4], double B[][4])
+{
+    double err_sum = 0;
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+             err_sum += fabs(A[i][j]- B[i][j]);
+        }
+    }
+    return err_sum;
+}
